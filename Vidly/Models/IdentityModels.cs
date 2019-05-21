@@ -20,6 +20,10 @@ namespace Vidly.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        // 自定義類別
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
