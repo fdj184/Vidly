@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,7 +31,7 @@ namespace Vidly.Controllers
             //var customers = GetCustomers();
 
             // 改成從 ApplicationDbContext 取得客戶資料
-            var customers = _context.Customers;
+            var customers = _context.Customers.Include(c => c.MembershipType);
 
             return View(customers);
         }
