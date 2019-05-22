@@ -9,10 +9,28 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
+        private ApplicationDbContext _context;
+
+        // 建構式，初始化 ApplicationDbContext 物件
+        public CustomersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        // 覆寫 Dispose()，讓 ApplicationDbContext 物件可以釋放資源
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
         // GET: Customers
         public ActionResult Index()
         {
-            var customers = GetCustomers();
+            // 原本 hard code 客戶資料
+            //var customers = GetCustomers();
+
+            // 改成從 ApplicationDbContext 取得客戶資料
+            var customers = _context.Customers;
 
             return View(customers);
         }
@@ -21,7 +39,11 @@ namespace Vidly.Controllers
         [Route("customers/details/{Id:regex(\\d+)}")]
         public ActionResult Details(int Id)
         {
-            var customer = GetCustomers().SingleOrDefault(c => c.Id == Id);
+            // 原本 hard code 客戶資料
+            //var customer = GetCustomers().SingleOrDefault(c => c.Id == Id);
+
+            // 改成從 ApplicationDbContext 取得客戶資料
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == Id);
 
             if (customer == null)
                 return HttpNotFound();
@@ -29,13 +51,14 @@ namespace Vidly.Controllers
             return View(customer);
         }
 
-        private IEnumerable<Customer> GetCustomers()
-        {
-            return new List<Customer>()
-            {
-                new Customer { Id = 1, Name = "John Smith" },
-                new Customer { Id = 2, Name = "Mary Williams" }
-            };
-        }
+        // 原本 hard code 客戶資料
+        //private IEnumerable<Customer> GetCustomers()
+        //{
+        //    return new List<Customer>()
+        //    {
+        //        new Customer { Id = 1, Name = "John Smith" },
+        //        new Customer { Id = 2, Name = "Mary Williams" }
+        //    };
+        //}
     }
 }
