@@ -66,12 +66,13 @@ namespace Vidly.Controllers
         public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
-            var viewModel = new NewCustomerViewModel()
+            var viewModel = new CustomerFormViewModel()
             {
                 MembershipTypes = membershipTypes
             };
 
-            return View(viewModel);
+            // 指定 View 為 CustomerForm.cshtml，否則會因為找不到 Edit.cshtml 而出錯
+            return View("CustomerForm", viewModel);
         }
 
         [HttpPost]
@@ -81,6 +82,24 @@ namespace Vidly.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Customers");
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            // 找出客戶資料
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == Id);
+
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            // 指定 View 為 CustomerForm.cshtml，否則會因為找不到 Edit.cshtml 而出錯
+            return View("CustomerForm", viewModel);
         }
     }
 }
