@@ -76,9 +76,22 @@ namespace Vidly.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Customer customer)
+        public ActionResult Save(Customer customer)
         {
-            _context.Customers.Add(customer);
+            if (customer.Id == 0)
+                _context.Customers.Add(customer);
+            else
+            {
+                // 更新前要先撈出 DB 中的狀態
+                var customerInDB = _context.Customers.Single(c => c.Id == customer.Id);
+
+                // 依欄位更新
+                customerInDB.Name = customer.Name;
+                customerInDB.Birthday = customer.Birthday;
+                customerInDB.MembershipTypeId = customer.MembershipTypeId;
+                customerInDB.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Customers");
