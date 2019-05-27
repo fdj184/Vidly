@@ -10,7 +10,7 @@ namespace Vidly.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name 欄位不得為空且長度限制為 255 字元。")]
         [StringLength(255)]
         public string Name { get; set; }
 
