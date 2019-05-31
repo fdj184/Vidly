@@ -12,21 +12,25 @@
 else
 {
     <table id="customers" class="table table-bordered table-hover">
-        <tr>
-            <th>Customer</th>
-            <th>Membership Type</th>
-            <th>Delete</th>
-        </tr>
-        @foreach (var customer in Model)
-        {
+        <thead>
             <tr>
-                <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { Id = customer.Id }, null)</td>
-                <td>@customer.MembershipType.Name</td>
-                <td>
-                    <button class="btn-link js-delete" data-customer-id="@customer.Id">Delete</button>
-                </td>
+                <th>Customer</th>
+                <th>Membership Type</th>
+                <th>Delete</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { Id = customer.Id }, null)</td>
+                    <td>@customer.MembershipType.Name</td>
+                    <td>
+                        <button class="btn-link js-delete" data-customer-id="@customer.Id">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 }
 
@@ -34,6 +38,8 @@ else
 {
     <script>
         $(document).ready(function () {
+            $("#customers").DataTable();
+
             $("#customers").on("click", ".js-delete", function () {
                 const button = $(this);
 
