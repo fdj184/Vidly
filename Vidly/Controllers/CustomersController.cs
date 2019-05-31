@@ -28,13 +28,7 @@ namespace Vidly.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            // 原本 hard code 客戶資料
-            //var customers = GetCustomers();
-
-            // 改成從 ApplicationDbContext 取得客戶資料
-            var customers = _context.Customers.Include(c => c.MembershipType);
-
-            return View(customers);
+            return View();
         }
 
         // GET: Customers/Details
