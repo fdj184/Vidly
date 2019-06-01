@@ -29,11 +29,7 @@ namespace Vidly.Controllers
         // GET: Movies
         public ActionResult Index()
         {
-            // 原本 hard code 客戶資料
-            //var movies = GetMovies();
-            var movies = _context.Movies.Include(m => m.Genre);
-
-            return View(movies);
+            return View();
         }
 
         // GET: Movies/Details
