@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -29,7 +30,10 @@ namespace Vidly.Controllers
         // GET: Movies
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
+
+            return View("ListReadOnly");
         }
 
         // GET: Movies/Details
@@ -72,6 +76,7 @@ namespace Vidly.Controllers
         //    };
         //}
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var viewModel = new MovieFormViewModel()
@@ -82,6 +87,7 @@ namespace Vidly.Controllers
             return View("MovieForm", viewModel);
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Edit(int Id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == Id);
@@ -99,6 +105,7 @@ namespace Vidly.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Save(Movie movie)
         {
             if (!ModelState.IsValid)
