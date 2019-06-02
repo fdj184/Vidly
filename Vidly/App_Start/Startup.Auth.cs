@@ -54,9 +54,13 @@ namespace Vidly
             //   consumerKey: "",
             //   consumerSecret: "");
 
+            // If you don't have "ApiKey.cs", uncomment lines below and the social login feature will be fail.
             //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            //    appId: "0000",
+            //    appSecret: "0000");
+            app.UseFacebookAuthentication(
+                appId: ApiKey.Facebook.Id,
+                appSecret: ApiKey.Facebook.Secret);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
