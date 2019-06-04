@@ -46,17 +46,17 @@ namespace Vidly.Controllers.Api
             var customer = _context.Customers.SingleOrDefault(c => c.Id == rentalDto.CustomerId);
 
             if (customer == null)
-                return NotFound();
+                return BadRequest("CustomerId is not found.");
 
             foreach (var movieId in rentalDto.MovieIds)
             {
                 var movie = _context.Movies.SingleOrDefault(m => m.Id == movieId);
 
                 if (movie == null)
-                    return NotFound();
+                    return BadRequest("MovieId is not found.");
 
                 if (movie.NumberAvalible <= 0)
-                    return BadRequest($"Not enough amount of {movie.Name}");
+                    return BadRequest($"Not enough amount of {movie.Name}.");
 
                 movie.NumberAvalible--;
 
