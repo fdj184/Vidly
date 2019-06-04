@@ -55,6 +55,11 @@ namespace Vidly.Controllers.Api
                 if (movie == null)
                     return NotFound();
 
+                if (movie.NumberAvalible <= 0)
+                    return BadRequest($"Not enough amount of {movie.Name}");
+
+                movie.NumberAvalible--;
+
                 var rental = new Rental
                 {
                     Customer = customer,

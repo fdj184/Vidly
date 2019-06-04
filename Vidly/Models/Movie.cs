@@ -24,5 +24,8 @@ namespace Vidly.Models
 
         [Range(1, 20)]
         public short NumberInStock { get; set; }
+
+        [Range(1, 20)]
+        public short NumberAvalible { get; set; }
     }
 }
