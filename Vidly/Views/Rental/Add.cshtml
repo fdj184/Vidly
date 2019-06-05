@@ -8,13 +8,13 @@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" type="text" value="" class="form-control" />
+            <input id="customer" name="customer" type="text" value="" class="form-control" required data-rule-validCustomer="true" />
         </div>
     </div>
     <div class="form-group">
         <label>Movies</label>
         <div class="tt-container">
-            <input id="movie" type="text" value="" class="form-control" />
+            <input id="movie" name="movie" type="text" value="" class="form-control" data-rule-atLeastOneMovie="true" />
         </div>
     </div>
     <div class="row">
@@ -28,6 +28,8 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
+
     <script>
         $(document).ready(function () {
             let vm = {
@@ -76,20 +78,30 @@
                 $('#movie').typeahead("val", "");
             });
 
-            $("#AddRental").submit(function (e) {
-                e.preventDefault();
+            $.validator.addMethod("validCustomer", function (value, element) {
+                return vm.customerId && vm.customerId > 0;
+            }, "Select a valid customer.");
 
-                $.ajax({
-                    method: "POST",
-                    url: "/api/rental",
-                    data: vm
-                })
-                .done(function (e) {
-                    toastr.success("Rentals successfully recorded.");
-                })
-                .fail(function (e) {
-                    toastr.error("Unexpected error.");
-                });
+            $.validator.addMethod("atLeastOneMovie", function (value, element) {
+                return vm.movieIds.length > 0;
+            }, "Select at least one moive.");
+
+            $("#AddRental").validate({
+                submitHandler: function (form) {
+                    event.preventDefault();
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/api/rental",
+                        data: vm
+                    })
+                    .done(function (e) {
+                        toastr.success("Rentals successfully recorded.");
+                    })
+                    .fail(function (e) {
+                        toastr.error("Unexpected error.");
+                    });
+                }
             });
         });
     </script>
