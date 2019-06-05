@@ -86,7 +86,7 @@
                 return vm.movieIds.length > 0;
             }, "Select at least one moive.");
 
-            $("#AddRental").validate({
+            let validator = $("#AddRental").validate({
                 submitHandler: function (form) {
                     event.preventDefault();
 
@@ -97,6 +97,14 @@
                     })
                     .done(function (e) {
                         toastr.success("Rentals successfully recorded.");
+
+                        $("#customer").typeahead("val", "");
+                        $("#movie").typeahead("val", "");
+                        $("#movieList").empty();
+
+                        vm = { movieIds: [] };
+
+                        validator.resetForm();
                     })
                     .fail(function (e) {
                         toastr.error("Unexpected error.");
